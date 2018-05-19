@@ -1,0 +1,60 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Night Sky</title>
+	<script type="text/javascript" src="paper-full.js"></script>
+	<link rel="stylesheet" type="text/css" href="circles.css">
+
+	<script type="text/paperscript" canvas="myCanvas">
+
+		circles = [];
+		var maxPoint = new Point(view.size.width, view.size.height);
+		console.log(maxPoint);
+
+		var numStars = 100;
+		for(var i=0; i<numStars;i++) {
+			//Grab a random point on the screen		
+			var circleCenter = maxPoint * Point.random();
+			var circleRadius = getRandomSize();
+			var color = getRandomColor();
+
+			var circle = new Path.Circle(new Point(circleCenter), circleRadius);
+			circle.fillColor = color;
+			circles.push(circle);
+		}
+
+		function getRandomColor(){
+			var r = parseInt(Math.random() * 255);
+			var g = parseInt(Math.random() * 255);
+			var b = parseInt(Math.random() * 255);
+			color = "rgb(" + r + "," + g + "," + b + ")";
+			console.log(color);
+			return color;
+		}
+
+		function getRandomSize(){
+			var min = 0.1;
+			var max = 1;
+			var size = Math.random() * (max - min) + min
+			console.log("size", size)
+			return size;
+		}
+
+
+		
+		function onFrame(event) {		
+			for(var i = 0; i < circles.length; i++) {
+				circles[i].fillColor.hue += 1;
+			}
+		}
+
+	</script>
+</head>
+<body>
+	<canvas id="myCanvas" resize></canvas>
+
+</body>
+</html>
