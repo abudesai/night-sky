@@ -8,46 +8,68 @@
 	<script type="text/javascript" src="paper-full.js"></script>
 	<link rel="stylesheet" type="text/css" href="circles.css">
 
-	<script type="text/paperscript" canvas="myCanvas">
+	<script type="text/paperscript" canvas="myCanvas">		
 
-		circles = [];
+		//Get a reasonable number of stars and planets depending on screen size
+		var screenWidth = view.size.width;
+		var screenHeight = view.size.height;
+		var numStars = screenWidth * screenHeight / 15000; 
+		var numPlanets = numStars / 2; //just picking half as many planet as stars
+		console.log('#stars:', numStars, ', #planets:', numPlanets);
+
+		//Define maxPoint which is lower right corner
+		//we will use maxPoint to create random locations on the screen
 		var maxPoint = new Point(view.size.width, view.size.height);
-		console.log(maxPoint);
+		//console.log(maxPoint);
 
-		var numStars = 100;
+		//create stars and store in array
+		stars = [];
 		for(var i=0; i<numStars;i++) {
 			//Grab a random point on the screen		
-			var circleCenter = maxPoint * Point.random();
-			var circleRadius = getRandomSize();
+			var starLocation = maxPoint * Point.random();
+			var starRadius = getRandomSize(0.1, 0.9);
 			var color = getRandomColor();
 
-			var circle = new Path.Circle(new Point(circleCenter), circleRadius);
-			circle.fillColor = color;
-			circles.push(circle);
+			var star = new Path.Circle(new Point(starLocation), starRadius);
+			star.fillColor = color;
+			stars.push(star);
 		}
 
+		//create planets and store in array
+		planets = [];
+		for(var i=0; i<numPlanets;i++) {
+			//Grab a random point on the screen		
+			var planetLocation = maxPoint * Point.random();
+			//picking smaller size for planets
+			var planetRadius = getRandomSize(0.1, 0.6); 
+			var color = getRandomColor();
+
+			var planet = new Path.Circle(new Point(planetLocation), planetRadius);
+			planet.fillColor = color;
+			planets.push(planet);
+		}
+
+		//function to get random rgb color
 		function getRandomColor(){
 			var r = parseInt(Math.random() * 255);
 			var g = parseInt(Math.random() * 255);
 			var b = parseInt(Math.random() * 255);
 			color = "rgb(" + r + "," + g + "," + b + ")";
-			console.log(color);
+			//console.log(color);
 			return color;
 		}
 
-		function getRandomSize(){
-			var min = 0.1;
-			var max = 1;
-			var size = Math.random() * (max - min) + min
-			console.log("size", size)
+		//function to get random size of star/planet
+		function getRandomSize(minSize, maxSize){			
+			var size = Math.random() * (maxSize - minSize) + minSize;
+			//console.log("size", size)
 			return size;
 		}
-
-
 		
+		//event listener - just tracks frame change
 		function onFrame(event) {		
-			for(var i = 0; i < circles.length; i++) {
-				circles[i].fillColor.hue += 1;
+			for(var i = 0; i < stars.length; i++) {
+				stars[i].fillColor.hue += 1;
 			}
 		}
 
