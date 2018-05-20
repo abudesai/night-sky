@@ -13,9 +13,9 @@
 		//Get a reasonable number of stars and planets depending on screen size
 		var screenWidth = view.size.width;
 		var screenHeight = view.size.height;
-		var numStars = screenWidth * screenHeight / 12000; 
-		var numPlanets = numStars / 2; //just picking half as many planet as stars
-		console.log('#stars:', numStars, ', #planets:', numPlanets);
+		var numStars = screenWidth * screenHeight / 15000; 
+		var numPlanets = numStars * 0.5; //just picking half as many planet as stars
+		//console.log('#stars:', numStars, ', #planets:', numPlanets);
 
 		//Define maxPoint which is lower right corner
 		//we will use maxPoint to create random locations on the screen
@@ -23,14 +23,16 @@
 		//console.log(maxPoint);
 
 		//create stars and store in array
+		var starPoints = 12
 		stars = [];
 		for(var i=0; i<numStars;i++) {
 			//Grab a random point on the screen		
 			var starLocation = maxPoint * Point.random();
-			var starRadius = getRandomSize(0.1, 0.9);
+			var starRadius = getRandomSize(0.1, 0.5);
 			var color = getRandomColor();
 
-			var star = new Path.Circle(new Point(starLocation), starRadius);
+			//var star = new Path.Circle(new Point(starLocation), starRadius);
+			var star = new Path.Star(new Point(starLocation), starPoints, starRadius, starRadius * 3);
 			star.fillColor = color;
 			stars.push(star);
 		}
@@ -69,7 +71,7 @@
 		//event listener - just tracks frame change
 		function onFrame(event) {		
 			for(var i = 0; i < stars.length; i++) {
-				stars[i].fillColor.hue += 1;
+				stars[i].fillColor.hue += 0.5;
 			}
 		}
 
